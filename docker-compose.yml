@@ -1,0 +1,21 @@
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 'faztpassword'
+      MYSQL_DATABASE: 'flaskcrud'
+    volumes:
+      - ./database_flaskcrud.sql/db.sql:/docker-entrypoint-initdb.d/database_flaskcrud.sql
+    ports:
+      - "3306:3306"
+
+  pythonapp:
+    build: .
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    environment:
+      FLASK_ENV: development
